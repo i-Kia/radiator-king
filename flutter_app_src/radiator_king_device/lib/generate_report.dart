@@ -101,7 +101,7 @@ class GenerateReportFormState extends State<GenerateReportForm> {
               child: TextFormField(
                 onSaved: (value){_licenseCode=value!;},
                 maxLines: null,
-                maxLength: 10,
+                maxLength: 20,
                 style: TextStyle(
                   color: Colors.white,
                 ),

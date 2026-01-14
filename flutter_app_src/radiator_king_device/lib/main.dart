@@ -191,6 +191,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () => setState(() {
                   if (connectionStatus) {
                     selectedDevice!.disconnect();
+                    highestPPMValue = 0;
                   } else {
                     _navigateAndGetDevice(context);
                   }

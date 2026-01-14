@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:radiator_king_device/generate_report.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -262,10 +263,10 @@ class ReportState extends State<Report> {
             padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: ElevatedButton.icon(
               onPressed: () async {
-                //final image = await rootBundle.load("banner.png");
-                //final imageBytes = image.buffer.asUint8List();
+                // final image = await rootBundle.load("assets/banner.png");
+                // final imageBytes = image.buffer.asUint8List();
 
-                //pw.Image imageBanner = pw.Image(pw.MemoryImage(imageBytes));
+                // pw.Image imageBanner = pw.Image(pw.MemoryImage(imageBytes));
 
                 final pdfReport = pw.Document();
 

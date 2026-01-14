@@ -9,6 +9,11 @@
 #include <BLEServer.h>
 
 // =================================================
+// BATTERY PIN DEFINITIONS
+// =================================================
+#define BAT_EN  15        // 🔋 Battery / Power enable pin
+
+// =================================================
 // LILYGO T-DISPLAY S3 PIN DEFINITIONS
 // =================================================
 #define TFT_BL   38        // Backlight pin (MUST be enabled)
@@ -134,6 +139,10 @@ class pServerCallbacks: public BLEServerCallbacks {
 // SETUP
 // =================================================
 void setup() {
+
+  // 🔋 BATTERY ENABLE (IMPORTANT)
+  pinMode(BAT_EN, OUTPUT);
+  digitalWrite(BAT_EN, HIGH);
 
   // ----- BACKLIGHT -----
   pinMode(TFT_BL, OUTPUT);
