@@ -59,7 +59,7 @@ class HomePage extends StatefulWidget{
 
 // Color.fromRGBO(9, 36, 41, 0)
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   StreamSubscription<List<int>>? streamSub;
   BluetoothDevice? selectedDevice;
@@ -69,12 +69,23 @@ class _HomePageState extends State<HomePage> {
 
   int highestPPMValue = 0;
 
+  late AnimationController controller;
+
   @override
   void initState() {
     super.initState();
 
+    /* controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2)
+    )..addListener(() {
+      setState(() {
+      });
+    }); */
+
     Timer _ = Timer.periodic(Duration(seconds: 2), (Timer t) {
       setState(() {
+        // controller.repeat();
         if (connectionStatus){
           writeData();
 
@@ -152,33 +163,44 @@ class _HomePageState extends State<HomePage> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                    Center(
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          connectionStatus ? receivedValue : "0", 
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.white
+                        Center(
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              connectionStatus ? receivedValue : "0", 
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Center(
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          "CO₂ ppm",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 2,
-                            color: Colors.white
+                        Center(
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              "CO₂ ppm",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 2,
+                                color: Colors.white
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-
+                        /*Center(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(20, 1, 20, 0),
+                            child: LinearProgressIndicator(
+                              value: connectionStatus ? controller.value : 0,
+                              minHeight: 1,
+                              color: Colors.white,
+                              backgroundColor: Color(0xFF051518),
+                              borderRadius: BorderRadius.all(Radius.circular(1)),
+                            ),
+                          ),
+                        ),*/
                       ],
                     ),
                   ],
