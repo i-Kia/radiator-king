@@ -9,6 +9,11 @@
 #include <BLEServer.h>
 
 // =================================================
+// SCD4 WARM UP TIME
+// =================================================
+#define WARMUP_TIME 60
+
+// =================================================
 // BATTERY PIN DEFINITIONS
 // =================================================
 #define BAT_EN  15        // 🔋 Battery / Power enable pin
@@ -70,6 +75,31 @@ String getStatusText(int value) {
   if (value < 800)  return "NORMAL";
   if (value < 1500) return "ELEVATED CO2";
   return "COMBUSTION LEAK!";
+}
+
+// =================================================
+// DRAW SPLASH SCREEN
+// =================================================
+void drawSplashScreen() {
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(3);
+  tft.drawString("eBlockTest.com", 10, 75);
+}
+
+// =================================================
+// DRAW SCD41 WARM-UP INFO SCREEN
+// =================================================
+void drawWarmUpMsg(int timeElapsed) {
+  tft.fillRect(100, 40, 200, 60, TFT_BLACK);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(2);
+  tft.drawString("SENSOR WARMING UP", 10, 10);
+  tft.drawString("TIME LEFT: " + String(WARMUP_TIME - timeElapsed) + "s", 10, 40);
+  tft.setTextSize(1);
+  tft.drawString("During this time readings may be unstable", 10, 70);
+  tft.drawString("CO2 values can drift or spike", 10, 90);
+  tft.drawString("Temperature and Humidity also stabilises", 10, 110);
+  tft.drawString("Do not trust readings in the first minute", 10, 130);
 }
 
 // =================================================
@@ -158,8 +188,11 @@ void setup() {
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
 
-  // Draw immediately
-  drawGauge(400);
+  // ----- SPLASH SCREEN -----
+  drawSplashScreen();
+  delay(5000);
+  tft.fillScreen(TFT_BLACK);
+  drawWarmUpMsg(0);
 
   // ----- I2C -----
   Wire.begin(I2C_SDA, I2C_SCL);
@@ -172,6 +205,12 @@ void setup() {
   scd4x.startPeriodicMeasurement();
 
   Serial.println("SCD4x warming up...");
+
+  // ----- SCD41 WARM UP -----
+  for (int i = 0; i < WARMUP_TIME; i++) {
+    delay(1000);
+    drawWarmUpMsg(i);
+  }
 
   // ----- BLUETOOTH -----
   BLEDevice::init("Radiator King BLE");
@@ -192,6 +231,7 @@ void setup() {
   pAdvertising->setMinPreferred(0x12);
   BLEDevice::startAdvertising();
   
+  tft.fillScreen(TFT_BLACK);
 }
 
 // =================================================
