@@ -346,9 +346,6 @@ class ReportState extends State<Report> {
                           ),
                           pw.Text(
                             "Report generated on: $formatted\n\nVehicle: $vehicleSpecs\nNumber Plate: $licenseCode",
-                            style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold,
-                            ),
                           ),
                           pw.Text(
                             fuelType == FuelType.petrol ? "Fuel Type: Petrol" : "Fuel Type: Diesel",
